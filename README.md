@@ -1,2 +1,2 @@
-# algorithm
+# Algorithm
 algorithm practice and assignment
