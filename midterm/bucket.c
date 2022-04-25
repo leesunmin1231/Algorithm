@@ -1,13 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#define MAX_SIZE 10000
-
-
-typedef struct node{
-    struct node *next;
-    int data;
-} Node;
+#include "Sort.h"
 
 Node *Create()
 {
@@ -78,22 +69,6 @@ void sort_list(Node *list)
 	}
 }
 
-void print_list(Node *list)
-{
-	while (list)
-	{
-		printf("%d\n",list->data);
-		list = list->next;
-	}
-}
-
-void printArray(int *arr, int size)
-{
-	for (int i = 0; i < size; i++)
-		printf("%d ", arr[i]);
-	printf("\n");
-}
-
 int list_to_arr(Node *list, int *arr, int index)
 {
 	if (list->data == 0)
@@ -106,7 +81,18 @@ int list_to_arr(Node *list, int *arr, int index)
 	return index;
 }
 
-void bucketSort(int *arr, int size)
+void free_all_list(Node *list)
+{
+	Node *tmp;
+	while (list)
+	{
+		tmp = list;
+		list = list->next;
+		free(tmp);
+	}
+}
+
+void bucket_sort(int *arr, int size)
 {
 	int max = arr[0];
 	int min = arr[0];
@@ -134,13 +120,7 @@ void bucketSort(int *arr, int size)
 		sort_list(bucket_arr[i]);
 	for (i = 0; i < bucket_num; i++)
 		index = list_to_arr(bucket_arr[i], arr, index);
+	for (i = 0; i < bucket_num; i++)
+		free_all_list(bucket_arr[i]);
+	free(bucket_arr);
 }
-
-int main()
-{
-	int arr[10] = {11,9,21,8,17,19,13,1,24,12};
-	printArray(arr, 10);
-	bucketSort(arr, 10);
-	printArray(arr, 10);
-}
-	

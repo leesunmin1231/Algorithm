@@ -1,8 +1,6 @@
-#include <stdio.h>
+#include "Sort.h"
 
-#define swap(x,y,t) ( (t) = (y), (y) = (x), (x) = (t))
-
-void bubble_sort(int arr[], int size)
+void bubble_sort(int *arr, int size)
 {
 	int i, j, tmp;
 

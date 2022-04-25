@@ -1,13 +1,11 @@
-#include <stdio.h>
-
-#define MAX_ARR_SIZE 10000
+#include "Sort.h"
 
 void merge(int *arr, int left, int mid, int right)
 {
 	int i = left;
 	int j = mid+1;
 	int k = left;
-	int tmp[MAX_ARR_SIZE];
+	int tmp[MAX_SIZE];
 
 	while (i <= mid && j <= right)
 	{
@@ -24,14 +22,19 @@ void merge(int *arr, int left, int mid, int right)
 		arr[a] = tmp[a];
 }
 
-void merge_sort(int *arr, int left, int right)
+void merge_recur(int *arr, int left, int right)
 {
 	int mid = left;
 	if (left < right)
 	{
 		mid = (left+right)/2;
-		merge_sort(arr, left, mid);
-		merge_sort(arr, mid+1, right);
+		merge_recur(arr, left, mid);
+		merge_recur(arr, mid+1, right);
 	}
 	merge(arr, left, mid, right);
+}
+
+void merge_sort(int *arr, int size)
+{
+	merge_recur(arr, 0, size - 1);
 }
