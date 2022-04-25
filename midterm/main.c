@@ -48,7 +48,8 @@ double check_time(int *arr, int *origin, int size, void (*fp)(int *, int))
 	fp(arr, size);
 	end = clock();
 	double runtime = (double)(end - start);
-	//print_array(arr, size);
+	//if (size == 10000)
+	//	print_array(arr, size);
 	printf("%d size array execution time : %.0lf ms \n", size, runtime);
 	init_array(arr, origin, size);
 	return runtime;
@@ -109,7 +110,7 @@ int main(int argc, char **argv)
 		printf("random array\n");
 		random_array(arr1, ARR_SIZE1);
 		random_array(arr2, ARR_SIZE2);
-		random_array(arr3, ARR_SIZE2);
+		random_array(arr3, ARR_SIZE3);
 	}
 	else
 	{
@@ -125,7 +126,9 @@ int main(int argc, char **argv)
 
 	//printf("original arr\n");
 	//print_array(arr1, ARR_SIZE1);
+	//printf("\n arr2\n");
 	//print_array(arr2, ARR_SIZE2);
+	//printf("\n arr3\n");
 	//print_array(arr3, ARR_SIZE3);
 	
 	puts(" \n * bubble sort \n ");
@@ -176,6 +179,5 @@ int main(int argc, char **argv)
 	printf("|10000|");
 	print_result(bubble3, bucket3, insertion3, merge3, quick3, radix3);
 	printf("+-----+-------------+-------------+----------------+------------+------------+------------+\n");
-	
 }
 
