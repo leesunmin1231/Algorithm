@@ -9,10 +9,9 @@ int get_pivot(int *arr, int start, int end)
 	while (j < end)
 	{
 		if (arr[j] < pivot){
-			i++;
-			tmp = arr[j];
-			arr[j] = arr[i];
-			arr[i] = tmp;
+			tmp = arr[++i];
+			arr[i] = arr[j];
+			arr[j] = tmp;
 		}
 		j++;
 	}

@@ -41,16 +41,57 @@ void reverse_array(int *arr, int size)
 }
 
 
-void check_time(int *arr, int *origin, int size, void (*fp)(int *, int))
+double check_time(int *arr, int *origin, int size, void (*fp)(int *, int))
 {
 	clock_t start, end;
 	start = clock();
 	fp(arr, size);
 	end = clock();
-	double runtime = (double)(end - start)/CLOCKS_PER_SEC;
+	double runtime = (double)(end - start);
 	//print_array(arr, size);
-	printf("%d size array execution time : %.5lf \n", size, runtime);
+	printf("%d size array execution time : %.0lf ms \n", size, runtime);
 	init_array(arr, origin, size);
+	return runtime;
+}
+
+int number_of_digits(int n)
+{
+   	if(n == 0){
+		return 0;
+    	}
+    	while(n != 0)
+    	{
+        	return 1 + number_of_digits(n/10);
+    	}
+    	return 0;
+}
+
+void print_result(double bubble, double bucket, double insertion, double merge, double quick, double radix)
+{
+	printf(" %.0lf ms", bubble);
+	for (int i = 0; i < (strlen("bubble sort") - 2 - number_of_digits((int)bubble)); i++)
+		printf(" ");
+	printf("|");
+	printf(" %.0lf ms", bucket);
+	for (int i = 0; i < (strlen("bucket sort") - 2 - number_of_digits((int)bucket)); i++)
+		printf(" ");
+	printf("|");
+	printf(" %.0lf ms", insertion);
+	for (int i = 0; i < (strlen("insertion sort") - 2 - number_of_digits((int)insertion)); i++)
+		printf(" ");
+	printf("|");
+	printf(" %.0lf ms", merge);
+	for (int i = 0; i < (strlen("merge sort") - 2 - number_of_digits((int)merge)); i++)
+		printf(" ");
+	printf("|");
+	printf(" %.0lf ms", quick);
+	for (int i = 0; i < (strlen("quick sort") - 2 - number_of_digits((int)quick)); i++)
+		printf(" ");
+	printf("|");
+	printf(" %.0lf ms", radix);
+	for (int i = 0; i < (strlen("radix sort") - 2 - number_of_digits((int)radix)); i++)
+		printf(" ");
+	printf("|\n");
 }
 
 int main(int argc, char **argv)
@@ -88,34 +129,53 @@ int main(int argc, char **argv)
 	//print_array(arr3, ARR_SIZE3);
 	
 	puts(" \n * bubble sort \n ");
-	check_time(arr1, origin1, ARR_SIZE1, bubble_sort); 
-	check_time(arr2, origin2, ARR_SIZE2, bubble_sort); 
-	check_time(arr3, origin3, ARR_SIZE3, bubble_sort); 
+	double bubble1 = check_time(arr1, origin1, ARR_SIZE1, bubble_sort); 
+	double bubble2 = check_time(arr2, origin2, ARR_SIZE2, bubble_sort); 
+	double bubble3 = check_time(arr3, origin3, ARR_SIZE3, bubble_sort); 
 
 	puts(" \n * bucket sort \n ");
-	check_time(arr1, origin1, ARR_SIZE1, bucket_sort);
-	check_time(arr2, origin2, ARR_SIZE2, bucket_sort);
-	check_time(arr3, origin3, ARR_SIZE3, bucket_sort);
+	double bucket1 = check_time(arr1, origin1, ARR_SIZE1, bucket_sort);
+	double bucket2 = check_time(arr2, origin2, ARR_SIZE2, bucket_sort);
+	double bucket3 = check_time(arr3, origin3, ARR_SIZE3, bucket_sort);
 
 	puts(" \n * insertion sort \n ");
-	check_time(arr1, origin1, ARR_SIZE1, insertion_sort);
-	check_time(arr2, origin2, ARR_SIZE2, insertion_sort);
-	check_time(arr3, origin3, ARR_SIZE3, insertion_sort);
+	double insertion1 = check_time(arr1, origin1, ARR_SIZE1, insertion_sort);
+	double insertion2 = check_time(arr2, origin2, ARR_SIZE2, insertion_sort);
+	double insertion3 = check_time(arr3, origin3, ARR_SIZE3, insertion_sort);
 
 
 	puts(" \n * merge sort \n ");
-	check_time(arr1, origin1, ARR_SIZE1, merge_sort);
-	check_time(arr2, origin2, ARR_SIZE2, merge_sort);
-	check_time(arr3, origin3, ARR_SIZE3, merge_sort);
+	double merge1 = check_time(arr1, origin1, ARR_SIZE1, merge_sort);
+	double merge2 = check_time(arr2, origin2, ARR_SIZE2, merge_sort);
+	double merge3 = check_time(arr3, origin3, ARR_SIZE3, merge_sort);
 	
 	puts(" \n * quick sort \n ");
-	check_time(arr1, origin1, ARR_SIZE1, quick_sort);
-	check_time(arr2, origin2, ARR_SIZE2, quick_sort);
-	check_time(arr3, origin3, ARR_SIZE3, quick_sort);
+	double quick1 = check_time(arr1, origin1, ARR_SIZE1, quick_sort);
+	double quick2 = check_time(arr2, origin2, ARR_SIZE2, quick_sort);
+	double quick3 = check_time(arr3, origin3, ARR_SIZE3, quick_sort);
 
 	puts(" \n * radix sort \n ");
-	check_time(arr1, origin1, ARR_SIZE1, radix_sort);
-	check_time(arr2, origin2, ARR_SIZE2, radix_sort);
-	check_time(arr3, origin3, ARR_SIZE3, radix_sort);
+	double radix1 = check_time(arr1, origin1, ARR_SIZE1, radix_sort);
+	double radix2 = check_time(arr2, origin2, ARR_SIZE2, radix_sort);
+	double radix3 = check_time(arr3, origin3, ARR_SIZE3, radix_sort);
+
+
+	char str[10] = "reverse";
+	if (argc > 1 && !strcmp(argv[1], "random"))
+		strcpy(str, "random");
+	printf("\nResult Table (when %s array)\n", str);
+	printf("+-----+-------------+-------------+----------------+------------+------------+------------+\n");
+	printf("|     | bubble sort | bucket sort | insertion sort | merge sort | quick sort | radix sort |\n");
+	printf("+-----+-------------+-------------+----------------+------------+------------+------------+\n");
+	printf("|1000 |");
+	print_result(bubble1, bucket1, insertion1, merge1, quick1, radix1);
+	printf("+-----+-------------+-------------+----------------+------------+------------+------------+\n");
+	printf("|5000 |");
+	print_result(bubble2, bucket2, insertion2, merge2, quick2, radix2);
+	printf("+-----+-------------+-------------+----------------+------------+------------+------------+\n");
+	printf("|10000|");
+	print_result(bubble3, bucket3, insertion3, merge3, quick3, radix3);
+	printf("+-----+-------------+-------------+----------------+------------+------------+------------+\n");
+	
 }
 
