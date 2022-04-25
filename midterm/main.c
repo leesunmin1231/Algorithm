@@ -1,7 +1,10 @@
 #include "Sort.h"
 #include <time.h>
+#include <string.h>
 
-#define ARR_SIZE 10
+#define ARR_SIZE1 1000
+#define ARR_SIZE2 5000
+#define ARR_SIZE3 10000
 
 void init_array(int *arr, int *origin, int size)
 {
@@ -17,67 +20,102 @@ void print_array(int *arr, int size)
 	printf("\n");
 }
 
-int main()
+void random_array(int *arr, int size)
 {
-	int arr[ARR_SIZE] = {11,9,21,8,17,19,13,1,24,12};
-	int origin[ARR_SIZE] = {11,9,21,8,17,19,13,1,24,12};
-	clock_t bubble_s, bubble_e, bucket_s, bucket_e, insertion_s, insertion_e, merge_s, merge_e, quick_s, quick_e, radix_s, radix_e;
-	float bubble, bucket, insertion, merge, quick, radix;
+	int i,j;
+	srand(time(NULL));
+	for (i = 0; i < size; i++)
+	{
+		arr[i] = rand()% size + 1;
+		for (j = 0; j < i; j++)
+			if (arr[i] == arr[j])
+				i--;
+	}
+}
+
+void reverse_array(int *arr, int size)
+{
 	int i;
-	printf("original arr\n");
-	print_array(arr, ARR_SIZE);
+	for (i = 0; i < size; i++)
+		arr[i] = size - i;
+}
+
+
+void check_time(int *arr, int *origin, int size, void (*fp)(int *, int))
+{
+	clock_t start, end;
+	start = clock();
+	fp(arr, size);
+	end = clock();
+	double runtime = (double)(end - start)/CLOCKS_PER_SEC;
+	//print_array(arr, size);
+	printf("%d size array execution time : %.5lf \n", size, runtime);
+	init_array(arr, origin, size);
+}
+
+int main(int argc, char **argv)
+{
+	int arr1[ARR_SIZE1];
+	int arr2[ARR_SIZE2];
+	int arr3[ARR_SIZE3];
+	int origin1[ARR_SIZE1];
+	int origin2[ARR_SIZE2];
+	int origin3[ARR_SIZE3];
+
+
+	if (argc != 1 && strcmp(argv[1], "random") == 0)
+	{
+		printf("random array\n");
+		random_array(arr1, ARR_SIZE1);
+		random_array(arr2, ARR_SIZE2);
+		random_array(arr3, ARR_SIZE2);
+	}
+	else
+	{
+		printf("reverse array\n");
+		reverse_array(arr1, ARR_SIZE1);
+		reverse_array(arr2, ARR_SIZE2);
+		reverse_array(arr3, ARR_SIZE3);
+	}
+	init_array(origin1, arr1, ARR_SIZE1);
+	init_array(origin2, arr2, ARR_SIZE2);
+	init_array(origin3, arr3, ARR_SIZE3);
+		
+
+	//printf("original arr\n");
+	//print_array(arr1, ARR_SIZE1);
+	//print_array(arr2, ARR_SIZE2);
+	//print_array(arr3, ARR_SIZE3);
 	
 	puts(" \n * bubble sort \n ");
-	bubble_s = clock();
-	bubble_sort(arr, ARR_SIZE);
-	bubble_e = clock();
-	bubble = (float)(bubble_e - bubble_s)/CLOCKS_PER_SEC;
-	print_array(arr, ARR_SIZE);
-	printf("time : %.3f \n", bubble);
-	
-	init_array(arr, origin, ARR_SIZE);
+	check_time(arr1, origin1, ARR_SIZE1, bubble_sort); 
+	check_time(arr2, origin2, ARR_SIZE2, bubble_sort); 
+	check_time(arr3, origin3, ARR_SIZE3, bubble_sort); 
+
 	puts(" \n * bucket sort \n ");
-	bucket_s = clock();
-	bucket_sort(arr, ARR_SIZE);
-	bucket_e = clock();
-	bucket = (float)(bucket_e - bucket_s)/CLOCKS_PER_SEC;
-	print_array(arr, ARR_SIZE);
-	printf("time : %.3f \n", bucket);
+	check_time(arr1, origin1, ARR_SIZE1, bucket_sort);
+	check_time(arr2, origin2, ARR_SIZE2, bucket_sort);
+	check_time(arr3, origin3, ARR_SIZE3, bucket_sort);
 
-	init_array(arr, origin, ARR_SIZE);
 	puts(" \n * insertion sort \n ");
-	insertion_s = clock();
-	insertion_sort(arr, ARR_SIZE);
-	insertion_e = clock();
-	insertion = (float)(insertion_e - insertion_s)/CLOCKS_PER_SEC;
-	print_array(arr, ARR_SIZE);
-	printf("time : %.3f \n", insertion);
+	check_time(arr1, origin1, ARR_SIZE1, insertion_sort);
+	check_time(arr2, origin2, ARR_SIZE2, insertion_sort);
+	check_time(arr3, origin3, ARR_SIZE3, insertion_sort);
 
-	init_array(arr, origin, ARR_SIZE);
+
 	puts(" \n * merge sort \n ");
-	merge_s = clock();
-	merge_sort(arr, ARR_SIZE);
-	merge_e = clock();
-	merge = (float)(merge_e - merge_s)/CLOCKS_PER_SEC;
-	print_array(arr, ARR_SIZE);
-	printf("time : %.3f \n", merge);
-
-	init_array(arr, origin, ARR_SIZE);
+	check_time(arr1, origin1, ARR_SIZE1, merge_sort);
+	check_time(arr2, origin2, ARR_SIZE2, merge_sort);
+	check_time(arr3, origin3, ARR_SIZE3, merge_sort);
+	
 	puts(" \n * quick sort \n ");
-	quick_s = clock();
-	quick_sort(arr, ARR_SIZE);
-	quick_e = clock();
-	quick = (float)(quick_e - quick_s)/CLOCKS_PER_SEC;
-	print_array(arr, ARR_SIZE);
-	printf("time : %.3f \n", quick);
+	check_time(arr1, origin1, ARR_SIZE1, quick_sort);
+	check_time(arr2, origin2, ARR_SIZE2, quick_sort);
+	check_time(arr3, origin3, ARR_SIZE3, quick_sort);
 
-	init_array(arr, origin, ARR_SIZE);
 	puts(" \n * radix sort \n ");
-	radix_s = clock();
-	radix_sort(arr, ARR_SIZE);
-	radix_e = clock();
-	radix = (float)(radix_e - radix_s)/CLOCKS_PER_SEC;
-	print_array(arr, ARR_SIZE);
-	printf("time : %.3f \n", radix);
+	check_time(arr1, origin1, ARR_SIZE1, radix_sort);
+	check_time(arr2, origin2, ARR_SIZE2, radix_sort);
+	check_time(arr3, origin3, ARR_SIZE3, radix_sort);
 }
 

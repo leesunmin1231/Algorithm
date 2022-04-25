@@ -4,8 +4,8 @@ int get_pivot(int *arr, int start, int end)
 {
 	int pivot = arr[end];
 	int tmp;
-	int i = -1;
-	int j = 0;
+	int i = start - 1;
+	int j = start;
 	while (j < end)
 	{
 		if (arr[j] < pivot){
@@ -16,9 +16,10 @@ int get_pivot(int *arr, int start, int end)
 		}
 		j++;
 	}
-	arr[end] = arr[++i];
-	arr[i] = pivot;
-	return (i);
+	tmp = arr[i+1];
+	arr[i + 1] = arr[end];
+	arr[end] = tmp;
+	return (i + 1);
 }	
 
 void quick_recur(int *arr, int start, int end)
