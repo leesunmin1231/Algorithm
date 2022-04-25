@@ -31,15 +31,3 @@ void quicksort(int *arr, int start, int end)
 	quicksort(arr, start, pivot_idx - 1);
 	quicksort(arr, pivot_idx + 1, end);
 }
-
-int main()
-{
-	int arr[7] = {10, 80, 30, 90, 40, 50, 70};
-	for (int i = 0; i < 7; i++)
-		printf("%d ",arr[i]);
-	quicksort(arr, 0, 6);
-	printf("\n");
-	for (int i = 0; i < 7; i++)
-		printf("%d ",arr[i]);
-}
-	
