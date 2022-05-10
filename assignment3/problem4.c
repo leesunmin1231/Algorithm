@@ -44,13 +44,23 @@ Node *Insert(Node *tree, int data)
 }
 
 
-void Preorder(Node *tree) {
+void Inorder(Node *tree) {
     	if (tree)
     	{
+        	Inorder(tree->left);
         	printf("%d ", tree->data);
-        	Preorder(tree->left);
-        	Preorder(tree->right);
+        	Inorder(tree->right);
     	}
+}
+
+Node *Search(Node *tree, int data)
+{
+	if (tree == NULL || data == tree->data)
+		return tree;
+	if (data < tree->data)
+		return Search(tree->left, data);
+	else
+		return Search(tree->right, data);
 }
 
 void free_tree(Node *tree)
@@ -64,17 +74,45 @@ void free_tree(Node *tree)
 	}
 }
 
+int find_ancestor(Node *tree, int num1, int num2)
+{
+	Node *tmp = tree;
+	if (!Search(tree, num1) || !Search(tree, num2))
+		exit(1);
+	while (1)
+	{
+		if (num1 == tmp->data || num2 == tmp->data)
+			return tmp->data;
+		else if (tmp->data < num1 && tmp->data < num2)
+			tmp = tmp->right;
+		else if (tmp->data > num1 && tmp->data > num2)
+			tmp = tmp->left;
+		else
+			return tmp->data;
+	}
+}
+
 int main(void)
 {
-    Node *tree = NULL;
-    tree = Insert(tree, 6);
-    Insert(tree, 2);
-    Insert(tree, 8);
-    Insert(tree, 1);
-    Insert(tree, 3);
-    Insert(tree, 7);
-    Insert(tree, 9);
-    Preorder(tree);
-    free_tree(tree);
+    	Node *tree = NULL;
+    	tree = Insert(tree, 6);
+    	Insert(tree, 2);
+    	Insert(tree, 8);
+    	Insert(tree, 1);
+    	Insert(tree, 3);
+    	Insert(tree, 7);
+    	Insert(tree, 9);
+	printf("Binary search tree: ");
+    	Inorder(tree);
+	printf("\n");
 
+	int num1;
+	int num2;
+	printf("First node number: ");
+	scanf("%d",&num1);
+	printf("Second node number: ");
+	scanf("%d",&num2);
+	int ancestor = find_ancestor(tree, num1, num2);
+	printf("The lowest common ancestor is %d\n", ancestor);
+    	free_tree(tree);
 }
